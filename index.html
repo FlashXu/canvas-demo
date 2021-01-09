@@ -7,22 +7,65 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="canvas"></div>
+    <!-- <div id="canvas"></div> -->
+    <canvas id="canvas"></canvas>
     <script>
-      canvas.onclick = (e) => {
-        let anchor = document.createElement("div");
-        anchor.style.position = "absolute";
-        /*anchor.style.border = "1px solid red";*/
-        anchor.style.width = "6px";
-        anchor.style.height = "6px";
-        anchor.style.left = e.clientX + "px";
-        anchor.style.top = e.clientY + "px";
-        anchor.style.marginLeft = "-3px";
-        anchor.style.marginTop = "-3px";
-        anchor.style.background = "black";
-        anchor.style.borderRadius = "50%";
-        canvas.appendChild(anchor);
-      };
+      let canvas = document.getElementById("canvas");
+      canvas.height = document.documentElement.clientHeight;
+      canvas.width = document.documentElement.clientWidth;
+      let ctx = canvas.getContext("2d"); /* 获取画图对象 */
+      ctx.fillStyle = "blue"; /* 控制颜色 */
+      function drawLine(x1, y1, x2, y2) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1); /* 设置起始点 */
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+      let paintingSign = false; /* 设置画图指示信号 */
+      let isTouchDevice =
+        "ontouchstart" in document.documentElement; /* 判断是否是触摸屏 */
+
+      let prevX = 0;
+      let prevY = 0;
+      ctx.lineWidth = 10;
+      ctx.lineCap = "round";
+
+      if (isTouchDevice) {
+        /* 监听触屏按下 */
+        canvas.ontouchstart = (e) => {
+          prevX = e.touches[0].clientX;
+          prevY = e.touches[0].clientY;
+        };
+        /* 监听划屏 */
+        canvas.ontouchmove = (e) => {
+          x = e.touches[0].clientX;
+          y = e.touches[0].clientY;
+          drawLine(prevX, prevY, x, y);
+          prevX = e.touches[0].clientX;
+          prevY = e.touches[0].clientY;
+        };
+      } else {
+        /* 监听鼠标按下 */
+        canvas.onmousedown = (e) => {
+          paintingSign = true;
+          prevX = e.clientX;
+          prevY = e.clientY;
+        };
+        /* 监听鼠标移动 */
+        canvas.onmousemove = (e) => {
+          if (paintingSign) {
+            drawLine(prevX, prevY, e.clientX, e.clientY);
+            prevX = e.clientX;
+            prevY = e.clientY;
+          }
+        };
+        /* 监听鼠标松开 */
+        canvas.onmouseup = (e) => {
+          paintingSign = false;
+          prevX = e.clientX;
+          prevY = e.clientY;
+        };
+      }
     </script>
   </body>
 </html>

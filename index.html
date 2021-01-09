@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <script>
+      canvas.onclick = (e) => {
+        let anchor = document.createElement("div");
+        anchor.style.position = "absolute";
+        /*anchor.style.border = "1px solid red";*/
+        anchor.style.width = "6px";
+        anchor.style.height = "6px";
+        anchor.style.left = e.clientX + "px";
+        anchor.style.top = e.clientY + "px";
+        anchor.style.marginLeft = "-3px";
+        anchor.style.marginTop = "-3px";
+        anchor.style.background = "black";
+        anchor.style.borderRadius = "50%";
+        canvas.appendChild(anchor);
+      };
+    </script>
+  </body>
+</html>
